@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { FileText, Eye, AlertCircle, Sparkles, Brain, Search, BookOpen } from 'lucide-react';
+import { FileText } from 'lucide-react';
 import { ProcessedDocument, DocumentClause } from '../App';
 
 interface DocumentViewerProps {
@@ -19,19 +19,11 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
   };
 
   if (!document) {
-    return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
-        {/* ... unchanged content for empty state ... */}
-      </div>
-    );
+    return <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6" />;
   }
 
   if (document.status === 'processing') {
-    return (
-      <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6">
-        {/* ... unchanged content for processing state ... */}
-      </div>
-    );
+    return <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 p-6" />;
   }
 
   const highlightText = (text: string) => {
@@ -42,7 +34,7 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
       const regex = new RegExp(clause.text.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'), 'gi');
       highlightedText = highlightedText.replace(
         regex,
-        <mark class="bg-gradient-to-r from-yellow-200 to-yellow-300 px-2 py-1 rounded-lg border border-yellow-300" data-clause="${index}">${clause.text}</mark>
+        `<mark class="bg-gradient-to-r from-yellow-200 to-yellow-300 px-2 py-1 rounded-lg border border-yellow-300" data-clause="${index}">${clause.text}</mark>`
       );
     });
 
@@ -51,25 +43,6 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
 
   return (
     <div className="bg-white/80 backdrop-blur-sm rounded-2xl shadow-lg border border-white/20 overflow-hidden">
-      {/* Header */}
-      <div className="p-6 border-b border-gray-200 bg-gradient-to-r from-white to-gray-50">
-        {/* ... unchanged header ... */}
-      </div>
-
-      {/* AI Summary */}
-      {document.aiSummary && (
-        <div className="p-6 bg-gradient-to-r from-blue-50 to-purple-50 border-b border-gray-200">
-          {/* ... unchanged summary ... */}
-        </div>
-      )}
-
-      {/* Highlight Alert */}
-      {highlightedClauses.length > 0 && (
-        <div className="p-4 bg-gradient-to-r from-yellow-50 to-orange-50 border-b border-yellow-200">
-          {/* ... unchanged highlight alert ... */}
-        </div>
-      )}
-
       {/* Document Content */}
       <div className="p-6 max-h-96 overflow-y-auto">
         <div className="prose prose-sm max-w-none">
@@ -80,7 +53,7 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
         </div>
       </div>
 
-      {/* Referenced Clauses with View More */}
+      {/* Referenced Clauses */}
       {highlightedClauses.length > 0 && (
         <div className="p-6 bg-gradient-to-r from-gray-50 to-white border-t border-gray-200">
           <div className="flex items-center justify-between mb-4">
@@ -121,7 +94,7 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
                         <div className="w-12 bg-gray-200 rounded-full h-1.5">
                           <div
                             className="bg-blue-500 h-1.5 rounded-full transition-all duration-500"
-                            style={{ width: ${clause.relevanceScore * 100}% }}
+                            style={{ width: `${clause.relevanceScore * 100}%` }}
                           ></div>
                         </div>
                         <span className="text-xs font-medium text-gray-600">
@@ -131,7 +104,7 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
                     </div>
                   </div>
 
-                  {/* View More / View Less toggle */}
+                  {/* View More / View Less */}
                   <p className="text-sm text-gray-900 mb-2 leading-relaxed">
                     {expandedClauses.has(index)
                       ? clause.text
@@ -150,7 +123,10 @@ export default function DocumentViewer({ document, highlightedClauses }: Documen
 
                   <div className="flex flex-wrap gap-1">
                     {clause.keywords.map(keyword => (
-                      <span key={keyword} className="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full hover:bg-blue-200 transition-colors">
+                      <span
+                        key={keyword}
+                        className="text-xs text-blue-600 bg-blue-100 px-2 py-0.5 rounded-full hover:bg-blue-200 transition-colors"
+                      >
                         {keyword}
                       </span>
                     ))}
